@@ -1,65 +1,96 @@
+"use client";
+
 import Image from "next/image";
+import { motion, Variants } from "motion/react";
+import StreamButton from "./components/ui/button/StreamButton";
+import LogoCarousel from "./components/LogoCarousel";
+import SongsCarousel from "./components/music/SongsCarousel";
+import Testimonials from "./components/testimonials/Testimonials";
+import ContactForm from "./components/contact/ContactForm";
+
+const containerVariants: Variants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.05,
+    },
+  },
+};
+
+const itemVariants: Variants = {
+  hidden: {
+    opacity: 0,
+    filter: "blur(10px)",
+    y: 20,
+  },
+  visible: {
+    opacity: 1,
+    filter: "blur(0px)",
+    y: 0,
+    transition: {
+      ease: "easeInOut",
+    },
+  },
+};
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
+    <>
+    <div className="relative flex justify-center items-center w-full h-screen overflow-hidden">
+      <div className="relative inset-0 w-full h-full ">
+        <div className="absolute inset-0 w-full h-full bg-[linear-gradient(0deg,_rgba(26,113,161,0.3)_0%,_rgba(255,255,255,0)_80%)] -z-10"></div>
         <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
+          src="/hero-5.png"
+          alt="Hero"
+          width={600}
+          height={1080}
           priority
+          className="pointer-events-none absolute right-0 bottom-0 h-[52%] sm:h-[60%] md:h-[75%] lg:h-[90%] w-auto z-30"
         />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+        <Image
+          src="/bg-5.png"
+          fill
+          alt="Soft background texture"
+          className="object-cover object-[50%_25%]"
+        />
+      </div>
+      <motion.div
+        className="absolute flex flex-col md:ml-20 justify-center items-center md:items-start inset-0 w-full md:w-[60%] lg:w-[50%] h-screen px-6 pb-32 md:pb-0 md:pl-12 md:px-0 z-20 leading-tight text-center md:text-left"
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+      >
+        <motion.div
+          variants={itemVariants}
+          className="relative group [font-family:var(--font-geist-sans)] text-5xl sm:text-6xl md:text-7xl lg:text-[6rem] font-light tracking-tighter italic text-orange-900"
+        >
+          Cécile Gardens
+        </motion.div>
+        <motion.div
+          variants={itemVariants}
+          className="[font-family:var(--font-instrument-serif)] text-lg pl-3 sm:text-xl md:text-2xl lg:text-3xl font-extralight text-black italic tracking-wide sm:tracking-widest sm:[word-spacing:1rem]"
+        >
+          Country Singer /Songwriter
+        </motion.div>
+        <motion.div
+          variants={containerVariants}
+          className="flex flex-row flex-wrap justify-center md:justify-start items-center gap-2 sm:gap-3 font-extralight mt-5 w-auto"
+        >
+          <StreamButton variants={itemVariants} />
+          <motion.button
+            className="text-sm sm:text-lg md:text-xl text-black border px-4 py-3 sm:p-3 whitespace-nowrap backdrop-blur-lg cursor-pointer hover:scale-[1.05] transition-all w-auto"
+            variants={itemVariants}
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+            About Me
+          </motion.button>
+        </motion.div>
+      </motion.div>
     </div>
+    <LogoCarousel />
+    <SongsCarousel />
+    <Testimonials />
+    <ContactForm />
+    </>
   );
 }
+
