@@ -1,11 +1,14 @@
 import Link from "next/link";
 
 const links = [
-  { href: "#about", label: "About" },
-  { href: "#gallery", label: "Gallery" },
-  { href: "#visit", label: "Visit" },
-  { href: "#contact", label: "Contact" },
+  { href: "/", label: "Home" },
+  { href: "/shows", label: "Shows" },
+  { href: "/gallery", label: "Gallery" },
+  { href: "/about", label: "About" },
+  { href: "/merch", label: "Merch" },
 ];
+
+const CTA_HREF = "/#contact";
 
 export default function Navbar() {
   return (
@@ -19,7 +22,7 @@ export default function Navbar() {
           href="/"
           className="relative z-10 shrink-0 text-base tracking-tight italic text-neutral-900 sm:text-xl"
         >
-          Cecile Gardens
+          Cécile Gardens
         </Link>
         <ul className="relative z-10 flex items-center gap-1">
           {links.map(({ href, label }) => (
@@ -33,6 +36,20 @@ export default function Navbar() {
             </li>
           ))}
         </ul>
+        <Link
+          href={CTA_HREF}
+          className="group relative z-10 flex shrink-0 items-center gap-1.5 overflow-hidden rounded-full border border-orange-900/20 bg-orange-950 px-3 py-1.5 text-xs italic text-orange-50 shadow-[0_4px_16px_rgba(120,53,15,0.35)] transition-transform duration-200 hover:scale-[1.03] sm:px-5 sm:py-2 sm:text-lg"
+        >
+          <span
+            aria-hidden
+            className="pointer-events-none absolute inset-0 bg-linear-to-b from-white/25 to-transparent"
+          />
+          <span
+            aria-hidden
+            className="pointer-events-none absolute inset-y-0 -left-full w-1/2 -skew-x-12 bg-linear-to-r from-transparent via-white/35 to-transparent transition-[left] duration-700 ease-out group-hover:left-full"
+          />
+          <span className="relative z-10 whitespace-nowrap">Book a Gig</span>
+        </Link>
       </div>
     </nav>
   );

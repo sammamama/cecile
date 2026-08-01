@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import type { Song } from "./songs";
+import { claimPlayback, releasePlayback } from "./audioBus";
 
 const fmt = (s: number) => {
   if (!isFinite(s)) return "0:00";
@@ -42,16 +43,26 @@ export default function SongCard({ song }: { song: Song }) {
     });
   }, [activeLine]);
 
+  // Playing state is driven by the element's own play/pause events, so it stays
+  // correct even when another card pauses this one through the bus.
   const toggle = () => {
     const a = audioRef.current;
     if (!a) return;
     if (playing) {
       a.pause();
-      setPlaying(false);
     } else {
-      a.play().then(() => setPlaying(true)).catch(() => {});
+      claimPlayback(a);
+      a.play().catch(() => {});
     }
   };
+
+  // Stop this card's audio from lingering as the bus's active element.
+  useEffect(() => {
+    const a = audioRef.current;
+    return () => {
+      if (a) releasePlayback(a);
+    };
+  }, []);
 
   const seek = (e: React.MouseEvent<HTMLDivElement>) => {
     const a = audioRef.current;
@@ -62,16 +73,35 @@ export default function SongCard({ song }: { song: Song }) {
     setTime(a.currentTime);
   };
 
+  const playButton = (
+    <button
+      onClick={toggle}
+      aria-label={playing ? "Pause" : "Play"}
+      className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/20 bg-neutral-800 cursor-pointer text-white transition-colors hover:bg-white hover:text-black"
+    >
+      {playing ? (
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+          <rect x="6" y="5" width="4" height="14" rx="1" />
+          <rect x="14" y="5" width="4" height="14" rx="1" />
+        </svg>
+      ) : (
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M8 5v14l11-7z" />
+        </svg>
+      )}
+    </button>
+  );
+
   return (
     <div className="w-full overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-neutral-900 to-black shadow-2xl">
       <div className="grid grid-cols-1 sm:grid-cols-2">
         {/* ---------- Lyrics ---------- */}
         <div className="relative order-2 bg-neutral-200 p-4 sm:p-6">
-          <p className="mb-4 text-xs font-medium uppercase tracking-[0.3em] text-black/40">
+          <p className="mb-2 sm:mb-4 text-xs font-medium uppercase tracking-[0.3em] text-black/40">
             Lyrics
           </p>
-          <div ref={lyricsBoxRef} data-lenis-prevent className="relative h-56 overflow-y-auto sm:h-72 pr-2 [mask-image:linear-gradient(to_bottom,transparent,black_12%,black_88%,transparent)] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-            <ul className="flex flex-col gap-3 py-16">
+          <div ref={lyricsBoxRef} data-lenis-prevent className="relative h-44 overflow-y-auto sm:h-72 pr-2 [mask-image:linear-gradient(to_bottom,transparent,black_12%,black_88%,transparent)] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            <ul className="flex flex-col gap-2 py-6 sm:gap-3 sm:py-16">
               {song.lyrics.map((line, i) => (
                 <li
                   key={i}
@@ -90,7 +120,7 @@ export default function SongCard({ song }: { song: Song }) {
                       ? "text-black"
                       : i < activeLine
                       ? "text-black/25"
-                      : "text-black/40 hover:text-white/70"
+                      : "text-black/40 hover:text-black/60"
                   }`}
                 >
                   {line.text}
@@ -101,47 +131,27 @@ export default function SongCard({ song }: { song: Song }) {
         </div>
 
         {/* ---------- Player ---------- */}
-        <div className="order-1 flex flex-col items-center border-b border-white/10 bg-neutral-700 justify-center gap-4 p-4 sm:gap-5 sm:border-r sm:border-b-0 sm:p-6">
-          <div className="relative aspect-square w-full max-w-[140px] sm:max-w-[180px] overflow-hidden rounded-2xl shadow-lg ring-1 ring-white/10">
-            <Image
-              src={song.cover}
-              alt={song.title}
-              fill
-              sizes="180px"
-              className="object-cover"
-            />
-          </div>
+        <div className="order-1 flex flex-col items-center border-b border-white/10 bg-neutral-700 justify-center gap-3 p-4 sm:gap-5 sm:border-r sm:border-b-0 sm:p-6">
+          {/* Mobile: cover + meta + play sit on one row. Desktop: stacked column. */}
+          <div className="flex w-full max-w-xs items-center gap-3 sm:flex-col sm:gap-5">
+            <div className="relative aspect-square w-16 shrink-0 sm:w-full sm:max-w-[180px] overflow-hidden rounded-xl sm:rounded-2xl shadow-lg ring-1 ring-white/10">
+              <Image
+                src={song.cover}
+                alt={song.title}
+                fill
+                sizes="(min-width: 640px) 180px, 64px"
+                className="object-cover"
+              />
+            </div>
 
-          <div className="w-full max-w-xs text-center">
-            <h3 className="text-xl sm:text-2xl font-bold text-white">{song.title}</h3>
-            <p className="text-xs sm:text-sm text-white/50">{song.artist}</p>
-          </div>
+            <div className="min-w-0 flex-1 text-left sm:w-full sm:flex-none sm:text-center">
+              <h3 className="truncate text-base sm:text-2xl font-bold text-white sm:whitespace-normal">
+                {song.title}
+              </h3>
+              <p className="truncate text-xs sm:text-sm text-white/50">{song.artist}</p>
+            </div>
 
-          <div className="flex flex-wrap items-center justify-center gap-3">
-            <a
-              href={song.spotifyUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="rounded-full bg-[#1DB954] active:scale-[98%] px-4 py-2 text-xs sm:px-5 sm:text-sm font-semibold text-black transition-transform hover:scale-105"
-            >
-              Stream on Spotify
-            </a>
-            <button
-              onClick={toggle}
-              aria-label={playing ? "Pause" : "Play"}
-              className="flex h-11 w-11 items-center justify-center rounded-full border border-white/20 bg-neutral-800 cursor-pointer text-white transition-colors hover:bg-white hover:text-black"
-            >
-              {playing ? (
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                  <rect x="6" y="5" width="4" height="14" rx="1" />
-                  <rect x="14" y="5" width="4" height="14" rx="1" />
-                </svg>
-              ) : (
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M8 5v14l11-7z" />
-                </svg>
-              )}
-            </button>
+            {playButton}
           </div>
 
           {/* progress */}
@@ -160,6 +170,15 @@ export default function SongCard({ song }: { song: Song }) {
               <span>{fmt(duration)}</span>
             </div>
           </div>
+
+          <a
+            href={song.spotifyUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="w-full max-w-xs rounded-full bg-[#1DB954] px-4 py-2.5 text-center text-xs sm:px-5 sm:text-sm font-semibold text-black transition-transform hover:scale-105 active:scale-[98%]"
+          >
+            Stream on Spotify
+          </a>
         </div>
       </div>
 
@@ -168,7 +187,14 @@ export default function SongCard({ song }: { song: Song }) {
         src={song.audio}
         onTimeUpdate={(e) => setTime(e.currentTarget.currentTime)}
         onLoadedMetadata={(e) => setDuration(e.currentTarget.duration)}
-        onEnded={() => setPlaying(false)}
+        // Fires for our own pause AND when another card pauses us via the bus,
+        // so the play/pause icon stays in sync either way.
+        onPause={() => setPlaying(false)}
+        onPlay={() => setPlaying(true)}
+        onEnded={(e) => {
+          setPlaying(false);
+          releasePlayback(e.currentTarget);
+        }}
       />
     </div>
   );

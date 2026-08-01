@@ -1,18 +1,32 @@
 import type { NextRequest } from 'next/server';
 import { EmailTemplate } from '@/app/components/EmailTemplate';
 import { Resend } from 'resend';
+import { clientKey, rateLimit, sweep } from '@/app/lib/rateLimit';
 
 const resend = new Resend(process.env.RESEND_API);
 
-const domain = process.env.DOMAIN_NAME;
-const contactTo = process.env.CONTACT_TO_EMAIL;
+const contactTo = 'cecile.gardens@gmail.com';
+
+// Without a verified domain, Resend only accepts `onboarding@resend.dev` as the
+// sender, and only delivers it to the Resend account owner's address — which is
+// contactTo here. Set MAIL_FROM once a domain is verified to send branded mail.
+const from = process.env.MAIL_FROM ?? 'Cecile Gardens <onboarding@resend.dev>';
 
 const isEmail = (value: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 
 export async function POST(request: NextRequest) {
   try {
-    if (!process.env.RESEND_API || !domain || !contactTo) {
+    if (!process.env.RESEND_API) {
       return Response.json({ error: 'Email is not configured.' }, { status: 500 });
+    }
+
+    sweep();
+    const limit = rateLimit(`contact:${clientKey(request)}`);
+    if (!limit.allowed) {
+      return Response.json(
+        { error: 'Too many messages. Please try again later.' },
+        { status: 429, headers: { 'Retry-After': String(limit.retryAfter) } },
+      );
     }
 
     const body = await request.json().catch(() => null);
@@ -34,7 +48,7 @@ export async function POST(request: NextRequest) {
     }
 
     const { data, error } = await resend.emails.send({
-      from: `Cecile <contact@${domain}>`,
+      from,
       to: [contactTo],
       replyTo: email,
       subject: `Inquiry from ${name}`,

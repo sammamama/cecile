@@ -2,6 +2,8 @@
 
 import type { CSSProperties } from "react";
 import TestimonialCard from "./TestimonialCard";
+import DemoVideoPlayer from "./DemoVideoPlayer";
+import VideoSchema from "./VideoSchema";
 import { testimonials, type Testimonial } from "./data";
 
 // Three vertical marquee columns, each fed a slice of the list.
@@ -48,7 +50,8 @@ function MarqueeColumn({
 
 export default function Testimonials() {
   return (
-    <section className="w-full bg-white px-6 py-12 md:px-16 md:py-20">
+    <section id="live" className="w-full bg-white px-6 py-12 md:px-16 md:py-20 scroll-mt-24">
+      <VideoSchema />
       <h2 className="[font-family:var(--font-instrument-serif)] text-2xl sm:text-3xl md:text-4xl font-light italic text-neutral-800">
         What people say
       </h2>
@@ -69,19 +72,9 @@ export default function Testimonials() {
           </div>
         </div>
 
-        {/* 9:16 video */}
-        <div className="order-2 hidden w-full max-w-[360px] shrink-0 lg:block lg:max-w-[380px]">
-          <div className="relative aspect-[9/16] w-full overflow-hidden rounded-3xl border border-black/5 bg-neutral-100 shadow-sm ring-1 ring-black/[0.02]">
-            <video
-              src="/horse-run.webm"
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload="metadata"
-              className="absolute inset-0 h-full w-full object-cover"
-            />
-          </div>
+        {/* 9:16 live-performance clips */}
+        <div className="order-2 w-full max-w-[360px] shrink-0 lg:max-w-[380px]">
+          <DemoVideoPlayer />
         </div>
       </div>
     </section>

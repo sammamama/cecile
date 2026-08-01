@@ -4,13 +4,13 @@ import Image from "next/image";
 
 const logos = [
   { slug: "country_weekend", name: "Country Weekend", location: "Oirschot, NL" },
-  { slug: "drunken_port", name: "The Drunken Poet", location: "Melbourne, AUS" },
+  { slug: "drunken_poet", name: "The Drunken Poet", location: "Melbourne, AUS" },
   { slug: "espy", name: "The Espy", location: "Melbourne, AUS" },
-  { slug: "jongens", name: "De Jongens", location: "Groningen, NL" },
+  { slug: "jongens", name: "De Jongens uit de Buurt", location: "Winsum, NL" },
   { slug: "nevs", name: "Nev's Bar", location: "Melbourne, AUS" },
   { slug: "park_hotel", name: "Park Hotel", location: "Maryborough, AUS" },
   { slug: "pause_bar", name: "Pause Bar", location: "Melbourne, AUS" },
-  { slug: "phyllis", name: "Phyllis", location: "Chicago, US" },
+  { slug: "phyllis", name: "Phyllis Musical Inn", location: "Chicago, US" },
   { slug: "singelier", name: "Singelier", location: "Groningen, NL" },
   { slug: "tamworth", name: "Tamworth Country Music Festival", location: "Tamworth, AUS" },
   { slug: "thornbury_local", name: "Thornbury Local", location: "Melbourne, AUS" },

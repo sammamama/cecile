@@ -1,32 +1,39 @@
 import React, { useState } from "react";
-import { motion, AnimatePresence, Variants } from "framer-motion";
+import { motion, AnimatePresence, Variants } from "motion/react";
 import { ArrowRight } from "lucide-react";
 import GradientBackground from "../GradientBackground";
+import { SPOTIFY_ARTIST_URL } from "../../contact/socials";
 
 type StreamButtonProps = {
   variants?: Variants;
   label?: string;
   showIcon?: boolean;
-  onClick?: () => void;
+  href?: string;
 };
 
 export default function StreamButton({
   variants,
   label = "Stream on Spotify",
   showIcon = true,
-  onClick,
+  href = SPOTIFY_ARTIST_URL,
 }: StreamButtonProps) {
   const [isHovered, setIsHovered] = useState(false);
 
+  // Renders as an anchor, not a button — it navigates somewhere, so it needs
+  // to be middle-clickable and readable as a link by assistive tech.
   return (
-    <motion.button
+    <motion.a
       variants={variants}
-      onClick={onClick}
+      href={href}
+      target="_blank"
+      rel="noreferrer"
+      aria-label={label}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.96 }}
-      className="relative flex items-center justify-center whitespace-nowrap bg-neutral-800 text-white text-sm sm:text-base px-4 py-3 sm:px-6 sm:py-4 rounded-[40px] border border-white/5 cursor-pointer transition-colors duration-150 overflow-hidden"
+      transition={{ type: "spring", stiffness: 260, damping: 26, mass: 0.6 }}
+      className="relative flex cursor-pointer items-center justify-center overflow-hidden whitespace-nowrap rounded-[40px] border border-white/5 bg-neutral-800 px-4 py-3 text-sm text-white transition-colors duration-150 sm:px-6 sm:py-4 sm:text-base"
     >
       <GradientBackground
         gradientOrigin="left-middle"
@@ -40,7 +47,7 @@ export default function StreamButton({
         noiseIntensity={1.2}
         noisePatternSize={80}
         noisePatternRefreshInterval={2}
-        className="rounded-[40px] opacity-40 bg-neutral-800 z-10"
+        className="z-10 rounded-[40px] bg-neutral-800 opacity-40"
       />
       <AnimatePresence mode="popLayout">
         {showIcon && !isHovered && (
@@ -49,11 +56,11 @@ export default function StreamButton({
             initial={{ opacity: 0, x: -10 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -10 }}
-            transition={{ type: "spring", stiffness: 600, damping: 25 }}
+            transition={{ type: "spring", stiffness: 300, damping: 30, mass: 0.7 }}
             className="flex items-center shrink-0 mr-2.5"
           >
             <svg
-              className="w-4 h-4 z-20"
+              className="z-20 h-4 w-4"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 256 256"
               width="24"
@@ -78,13 +85,13 @@ export default function StreamButton({
             initial={{ opacity: 0, x: 10 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: 10 }}
-            transition={{ type: "spring", stiffness: 600, damping: 25 }}
+            transition={{ type: "spring", stiffness: 300, damping: 30, mass: 0.7 }}
             className="flex items-center shrink-0 ml-2.5"
           >
             <ArrowRight className="w-4 h-4 z-20" />
           </motion.div>
         )}
       </AnimatePresence>
-    </motion.button>
+    </motion.a>
   );
 }

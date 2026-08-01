@@ -2,71 +2,82 @@ export type Testimonial = {
   id: string;
   quote: string;
   author: string;
-  role: string;
+  /** Venue, publication or title. Omit when we only have a name. */
+  role?: string;
+  /** Only set for reviews that were actually left as a star rating. */
+  rating?: number;
+  /** BCP 47 tag for quotes left in their original language. Defaults to English. */
+  lang?: string;
 };
 
+// Real press and venue quotes. Long reviews are split across several cards so
+// each one reads on its own in the marquee.
 export const testimonials: Testimonial[] = [
   {
-    id: "t1",
+    id: "cassy-1",
     quote:
-      "Cécile had the whole room quiet by the second song. You do not see that happen on a Friday night in Thornbury.",
-    author: "Marcus Reid",
-    role: "Booker, The Workers Club",
+      "An absolute powerhouse of country music. From the moment she takes the stage she has the audience completely captivated — warm vocals, genuine presence, infectious energy.",
+    author: "Cassy",
+    role: "Rhythm & Tonic Bar, Sandringham",
+    rating: 5,
   },
   {
-    id: "t2",
+    id: "dekens-2024",
     quote:
-      "Warm, honest songwriting with a voice that carries the back of the room without a microphone.",
-    author: "Anneke Visser",
-    role: "De Jongens, Groningen",
+      "Mooi helder stemgeluid, die je doet denken aan Ilse DeLange in haar jonge jaren. Ze begeleidt zichzelf op gitaar.",
+    author: "Gerard Dekens",
+    role: "Theater vanBeresteyn, Veendam",
+    lang: "nl",
   },
   {
-    id: "t3",
+    id: "winsum-2019",
+    // Original: "Moesten we één echte topper-talent aanwijzen, dan zou het Cécile
+    // zijn geweest. 'Home coming queen' van Kelsea Ballerini, uitgevoerd met eigen
+    // begeleiding op gitaar."
     quote:
-      "She opened for us in Chicago and half the crowd left holding her record. That says everything.",
-    author: "Dana Holloway",
-    role: "Touring musician",
+      "If we had to name one real standout talent, it would have been Cécile. 'Homecoming Queen' with her own guitar accompaniment — a young folk singer with the charm to stand on a one-square-metre stage and play a cover authentically.",
+    author: "Winsum Nieuws",
+    role: "Hogeland Got Talent, 2019",
   },
   {
-    id: "t4",
+    id: "van-dijken",
     quote:
-      "Professional from load-in to last call. Turned up early, played longer than we asked, everyone stayed.",
-    author: "Sam Whitlock",
-    role: "Park Hotel, Maryborough",
+      "Because of Cécile Gardens it was a successful evening in the always bustling town of Bedum.",
+    author: "Piet van Dijken",
   },
   {
-    id: "t5",
+    id: "cassy-2",
     quote:
-      "Her set at Tamworth was the one people were still talking about at breakfast the next morning.",
-    author: "Rhonda Pierce",
-    role: "Festival programmer",
+      "Her voice is powerful and effortlessly authentic, bringing every song to life with real heart. Upbeat country anthems or heartfelt original ballads — she connects in a way that makes the show feel personal.",
+    author: "Cassy",
+    role: "Rhythm & Tonic Bar, Sandringham",
+    rating: 5,
   },
   {
-    id: "t6",
-    quote:
-      "Real country songwriting — no costume, no act. Just the stories and the guitar.",
-    author: "Tom Beaumont",
-    role: "Sunday Country Review",
+    id: "park-hotel",
+    quote: "One of the Park's most popular performers.",
+    author: "Park Hotel",
+    role: "Maryborough",
   },
   {
-    id: "t7",
-    quote:
-      "We rebooked her for three nights before she had finished packing up her gear.",
-    author: "Lien de Vries",
-    role: "Singelier, Groningen",
+    id: "robyn",
+    quote: "Keep an eye out on this one.",
+    author: "Robyn",
   },
   {
-    id: "t8",
+    id: "cassy-3",
     quote:
-      "Every song landed. I have run this room eight years and rarely see a debut go like that.",
-    author: "Jules Fontaine",
-    role: "Pause Bar, Melbourne",
+      "She engages effortlessly with the audience and creates an atmosphere where everyone feels part of the experience.",
+    author: "Cassy",
+    role: "Rhythm & Tonic Bar, Sandringham",
+    rating: 5,
   },
   {
-    id: "t9",
+    id: "cassy-4",
     quote:
-      "Cécile writes the kind of lyric you catch yourself repeating a week later.",
-    author: "Erin Cavanagh",
-    role: "Phyllis, Chicago",
+      "Solo or backed by her full band, it's a polished performance — every song delivered with professionalism and passion. A true country music superstar.",
+    author: "Cassy",
+    role: "Rhythm & Tonic Bar, Sandringham",
+    rating: 5,
   },
 ];

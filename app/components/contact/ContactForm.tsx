@@ -2,7 +2,9 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import { socials, CONTACT_EMAIL } from "./socials";
 import { motion } from "motion/react";
+import { toast } from "sonner";
 
 type Status = "idle" | "sending" | "sent" | "error";
 
@@ -35,21 +37,40 @@ export default function ContactForm() {
       const payload = await res.json().catch(() => ({}));
 
       if (!res.ok) {
-        setError(payload.error ?? "Something went wrong. Please try again.");
+        const message = payload.error ?? "Something went wrong. Please try again.";
+
+        // 429 = rate limited. Surface the wait time from Retry-After.
+        if (res.status === 429) {
+          const retryAfter = Number(res.headers.get("Retry-After"));
+          toast.error("Too many messages", {
+            description: retryAfter
+              ? `You can send 5 per hour. Try again in ${Math.ceil(retryAfter / 60)} min.`
+              : "You can send up to 5 messages per hour.",
+          });
+        } else {
+          toast.error(message);
+        }
+
+        setError(message);
         setStatus("error");
         return;
       }
 
       form.reset();
       setStatus("sent");
+      toast.success("Message sent", {
+        description: "Thanks — Cécile will get back to you.",
+      });
     } catch {
-      setError("Network error. Please try again.");
+      const message = "Network error. Please try again.";
+      setError(message);
       setStatus("error");
+      toast.error(message);
     }
   };
 
   return (
-    <section className="w-full bg-white px-6 py-12 md:px-16 md:py-20">
+    <section id="contact" className="w-full bg-white px-6 py-12 md:px-16 md:py-20 scroll-mt-24">
       <div className="mx-auto flex w-full flex-col items-center gap-10 lg:flex-row lg:items-stretch lg:gap-14">
         {/* Portrait image — desktop only, mobile layout stays heading + form */}
         <div className="hidden w-full max-w-[360px] shrink-0 lg:block lg:max-w-[420px]">
@@ -73,6 +94,40 @@ export default function ContactForm() {
               Bookings, collaborations, or just to say hello — send a note and
               I&apos;ll get back to you.
             </p>
+
+            {/* Direct mailto for anyone who would rather use their own client —
+                the form below delivers to the same address. */}
+            <a
+              href={`mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(
+                "Hello Cécile",
+              )}&body=${encodeURIComponent(
+                "Hi Cécile,\n\nI'm getting in touch about ",
+              )}`}
+              className="mt-4 inline-flex items-center gap-2 text-sm font-light text-neutral-600 underline-offset-4 transition-colors hover:text-neutral-900 hover:underline"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+                <rect x="3" y="5" width="18" height="14" rx="2" />
+                <path d="m3 7 9 6 9-6" />
+              </svg>
+              {CONTACT_EMAIL}
+            </a>
+
+            <ul className="mt-6 flex flex-wrap items-center gap-2">
+              {socials.map(({ label, href, icon }) => (
+                <li key={label}>
+                  <a
+                    href={href}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label={label}
+                    title={label}
+                    className="flex h-10 w-10 items-center justify-center rounded-full border border-black/10 text-neutral-600 transition-colors hover:border-neutral-800 hover:bg-neutral-800 hover:text-white"
+                  >
+                    {icon}
+                  </a>
+                </li>
+              ))}
+            </ul>
           </div>
 
           <form onSubmit={handleSubmit} className="w-full bg-neutral-100 rounded-lg p-5">
