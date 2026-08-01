@@ -38,14 +38,6 @@ export const galleryItems: GalleryItem[] = [
     alt: "Cécile Gardens performing live with her guitar.",
   },
   {
-    kind: "clip",
-    id: "clip-1",
-    src: "/gallery/gallery-1.webm",
-    poster: "/gallery/gallery-1-poster.webp",
-    alt: "Cécile Gardens playing a live country set.",
-    aspect: "9/16",
-  },
-  {
     kind: "photo",
     id: "photo-2",
     src: gallery2,

@@ -26,7 +26,7 @@ export default function AboutButton({
       aria-label={label}
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.96 }}
-      className="group relative flex items-center justify-center gap-2 overflow-hidden whitespace-nowrap rounded-[40px] border border-orange-900/25 bg-white/25 px-4 py-3 text-sm text-orange-950 shadow-[0_8px_24px_rgba(120,53,15,0.10),inset_0_1px_0_rgba(255,255,255,0.7)] backdrop-blur-xl backdrop-saturate-150 transition-colors duration-300 hover:border-orange-900/40 hover:bg-white/40 sm:px-6 sm:py-4 sm:text-base"
+      className="group relative flex items-center justify-center gap-2 overflow-hidden whitespace-nowrap rounded-[40px] bg-white/25 px-4 py-3 text-sm text-orange-950 shadow-[0_8px_24px_rgba(120,53,15,0.10),inset_0_1px_0_rgba(255,255,255,0.7)] backdrop-blur-xl backdrop-saturate-150 transition-colors duration-300 hover:bg-white/40 sm:px-6 sm:py-4 sm:text-base"
     >
       <span
         aria-hidden

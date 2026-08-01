@@ -1,8 +1,25 @@
 "use client";
 
-import { useState } from "react";
+import { Fragment, useState, type ReactNode } from "react";
 import Image from "next/image";
 import { content, type Language } from "./content";
+
+/**
+ * Turns the `**...**` marks in content.ts into bold + italic runs. Deliberately
+ * not a markdown lib: one mark type, plain text in, no HTML ever parsed.
+ */
+function renderCopy(text: string): ReactNode[] {
+  return text.split(/\*\*(.+?)\*\*/g).map((part, i) =>
+    // Odd indices are whatever sat between a pair of asterisks.
+    i % 2 === 1 ? (
+      <strong key={i} className="font-semibold italic text-neutral-800">
+        {part}
+      </strong>
+    ) : (
+      <Fragment key={i}>{part}</Fragment>
+    ),
+  );
+}
 
 export default function AboutContent() {
   const [lang, setLang] = useState<Language>("en");
@@ -24,10 +41,7 @@ export default function AboutContent() {
           </div>
         </div>
 
-        {/* `lang` flips with the toggle so assistive tech reads the right voice. */}
         <article lang={copy.htmlLang} className="flex min-h-0 w-full flex-col">
-          {/* Mobile: toggle sits beside the heading. Desktop: it detaches to
-              the top-right corner of the container (the nearest `relative`). */}
           <div className="flex shrink-0 items-center justify-between gap-3">
             <h1 className="[font-family:var(--font-libertinus)] text-3xl italic text-neutral-800 sm:text-4xl md:text-5xl lg:pr-24">
               {copy.heading}
@@ -66,7 +80,7 @@ export default function AboutContent() {
                 key={i}
                 className="text-sm font-light leading-relaxed text-neutral-600 sm:text-base"
               >
-                {paragraph}
+                {renderCopy(paragraph)}
               </p>
             ))}
             <p className="[font-family:var(--font-instrument-serif)] text-lg italic text-neutral-800 sm:text-xl">

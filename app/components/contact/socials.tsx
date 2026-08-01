@@ -45,6 +45,16 @@ export const socials: Social[] = [
     ),
   },
   {
+    label: "YouTube",
+    href: "https://www.youtube.com/@cecilegardens",
+    icon: (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round">
+        <rect x="2.5" y="5.5" width="19" height="13" rx="4" />
+        <path d="M10.5 9.5l5 2.5-5 2.5z" />
+      </svg>
+    ),
+  },
+  {
     label: "TikTok",
     href: "https://www.tiktok.com/@cecile.gardens",
     icon: (
