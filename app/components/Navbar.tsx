@@ -40,14 +40,14 @@ export default function Navbar() {
 
   return (
     <nav className="fixed inset-x-0 top-4 z-50 flex flex-col items-center px-4 font-instrument">
-      <div className="relative flex w-full max-w-3xl items-center justify-between gap-2 rounded-full border border-white/40 bg-white/15 px-4 py-2 sm:gap-6 sm:px-6 sm:py-3 shadow-[0_8px_32px_rgba(120,53,15,0.12),inset_0_1px_0_rgba(255,255,255,0.6),inset_0_-1px_0_rgba(255,255,255,0.1)] backdrop-blur-xl backdrop-saturate-150">
+      <div className="relative flex w-full max-w-2xl items-center justify-between gap-2 rounded-full border border-white/40 bg-white/15 px-4 py-2 sm:gap-4 sm:px-5 sm:py-2.5 md:py-1.5 shadow-[0_8px_32px_rgba(120,53,15,0.12),inset_0_1px_0_rgba(255,255,255,0.6),inset_0_-1px_0_rgba(255,255,255,0.1)] backdrop-blur-xl backdrop-saturate-150">
         <span
           aria-hidden
           className="pointer-events-none absolute inset-0 rounded-full bg-linear-to-b from-white/30 to-transparent"
         />
         <Link
           href="/"
-          className="relative z-10 shrink-0 text-base tracking-tight italic text-neutral-900 sm:text-xl"
+          className="relative z-10 shrink-0 text-base tracking-tight italic text-neutral-900 sm:text-xl md:text-lg"
         >
           Cécile Gardens
         </Link>
@@ -59,7 +59,7 @@ export default function Navbar() {
             <li key={href}>
               <Link
                 href={href}
-                className="rounded-full px-3 py-2 text-base italic lg:px-4 lg:text-lg text-neutral-900/80 transition-colors duration-200 hover:bg-white/40 hover:text-neutral-900"
+                className="rounded-full px-2.5 py-1.5 text-sm italic lg:px-3 lg:text-base text-neutral-900/80 transition-colors duration-200 hover:bg-white/40 hover:text-neutral-900"
               >
                 {label}
               </Link>
@@ -71,7 +71,7 @@ export default function Navbar() {
           <Link
             href={CTA_HREF}
             onClick={() => setOpen(false)}
-            className="group relative flex shrink-0 items-center gap-1.5 overflow-hidden rounded-xl border border-orange-950 bg-transparent px-3 py-1.5 text-xs italic text-orange-950 transition-[transform,background-color] duration-200 hover:scale-[1.03] hover:bg-orange-950/5 sm:px-5 sm:py-2 sm:text-lg"
+            className="group relative flex shrink-0 items-center gap-1.5 overflow-hidden rounded-xl border border-orange-950 bg-transparent px-4 py-2 text-sm italic text-orange-950 transition-[transform,background-color] duration-200 hover:scale-[1.03] hover:bg-orange-950/5 md:px-4 md:py-1.5 md:text-base"
           >
             {/* Sweep tinted to the border colour — the old white sheen only
                 read against the solid fill. */}
@@ -126,6 +126,16 @@ export default function Navbar() {
                 </li>
               ))}
             </ul>
+
+            {/* Solid closer to the menu — the pill in the bar is outline-only,
+                so this is the one filled target on the panel. */}
+            <Link
+              href={CTA_HREF}
+              onClick={() => setOpen(false)}
+              className="relative z-10 mt-2 block rounded-2xl bg-orange-950 px-4 py-3 text-center text-lg italic text-orange-50 transition-colors duration-200 hover:bg-orange-900"
+            >
+              Book a Gig
+            </Link>
           </motion.div>
         )}
       </AnimatePresence>
