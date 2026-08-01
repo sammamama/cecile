@@ -6,6 +6,7 @@ import {
   Libertinus_Serif,
 } from "next/font/google";
 import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
 import SmoothScroll from "./components/SmoothScroll";
 import ArtistSchema from "./components/seo/ArtistSchema";
 import { SITE_NAME, SITE_URL } from "./lib/site";
@@ -110,6 +111,7 @@ export default function RootLayout({
         <Toaster position="bottom-center" richColors closeButton />
         <Navbar />
         {children}
+        <Footer />
       </body>
     </html>
   );

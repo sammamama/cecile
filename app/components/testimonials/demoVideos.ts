@@ -1,17 +1,11 @@
 export type DemoVideo = {
   id: string;
-  /** Short venue/performance name — shown on the card and used as the SEO title. */
   name: string;
-  /** One sentence describing the clip. Used for the JSON-LD description. */
   description: string;
   src: string;
-  /**
-   * Fill these in for Google video rich results — both are REQUIRED by Google
-   * alongside name/description, and are intentionally left blank rather than
-   * guessed. `poster` should be a still frame; `uploadDate` ISO-8601.
-   */
   poster?: string;
   uploadDate?: string;
+  classname?: string;
 };
 
 // Served straight from `public/` — Vercel's CDN edge-caches these, so there is
@@ -25,6 +19,7 @@ export const demoVideos: DemoVideo[] = [
     description:
       "Cécile Gardens performing an original country song live on the street.",
     src: `${BUCKET}/busking.webm`,
+    classname: "object-center"
   },
   {
     id: "drunken-poet",
@@ -38,5 +33,6 @@ export const demoVideos: DemoVideo[] = [
     name: "Nev's Bar",
     description: "Cécile Gardens performing live at Nev's Bar.",
     src: `${BUCKET}/nevs.webm`,
+    classname: "object-top"
   },
 ];

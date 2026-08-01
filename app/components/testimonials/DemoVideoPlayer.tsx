@@ -41,7 +41,7 @@ export default function DemoVideoPlayer() {
         playsInline
         preload="metadata"
         onEnded={next}
-        className="absolute inset-0 h-full w-full object-cover"
+        className={"absolute inset-0 h-full w-full object-cover "+ current.classname}
       />
 
       <button
