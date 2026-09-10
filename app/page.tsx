@@ -1,5 +1,6 @@
 import Hero from "./components/Hero";
 import LogoCarousel from "./components/LogoCarousel";
+import PresaveStrip from "./components/PresaveStrip";
 import SongsCarousel from "./components/music/SongsCarousel";
 import Testimonials from "./components/testimonials/Testimonials";
 import ContactForm from "./components/contact/ContactForm";
@@ -14,6 +15,7 @@ export default async function Home() {
 
   return (
     <>
+      <PresaveStrip />
       <Hero nextShow={nextShow} />
       <LogoCarousel />
       <SongsCarousel />
