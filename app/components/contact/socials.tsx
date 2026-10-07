@@ -5,6 +5,10 @@ export const CONTACT_EMAIL = "cecile.gardens@gmail.com";
 export const SPOTIFY_ARTIST_URL =
   "https://open.spotify.com/artist/6GzHVjuX30LgNncT8Crl5c";
 
+// Latest single — linked from the home banner and the /qr page.
+export const COWGIRLS_TRACK_URL =
+  "https://open.spotify.com/track/6mKijmr7qG3Am5mdRxpWl1";
+
 type Social = {
   label: string;
   href: string;
@@ -65,3 +69,10 @@ export const socials: Social[] = [
     ),
   },
 ];
+
+// Look up one social by label, for places that feature a single platform.
+export function getSocial(label: string): Social {
+  const match = socials.find((s) => s.label === label);
+  if (!match) throw new Error(`Missing social: ${label}`);
+  return match;
+}

@@ -4,6 +4,9 @@ export const SITE_URL = (
 
 export const SITE_NAME = "Cécile Gardens";
 
+// Bookings go through the contact form on the home page.
+export const BOOKING_HREF = "/#contact";
+
 export const absoluteUrl = (path: string) =>
   path.startsWith("http") ? path : `${SITE_URL}${path.startsWith("/") ? path : `/${path}`}`;
 

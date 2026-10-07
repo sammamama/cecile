@@ -90,17 +90,23 @@ export default function DemoVideoPlayer() {
         </p>
       </figcaption>
 
-      <div className="absolute right-4 bottom-4 flex gap-1.5">
+      {/* The padding is the tap target: the dots stay 6px but each button is
+          ~38px tall, and the offsets are trimmed so they sit where they did. */}
+      <div className="absolute right-2.5 bottom-0 flex">
         {demoVideos.map((video, i) => (
           <button
             key={video.id}
             onClick={() => setIndex(i)}
             aria-label={`Play ${video.name}`}
             aria-current={i === index}
-            className={`h-1.5 rounded-full transition-all ${
-              i === index ? "w-5 bg-white" : "w-1.5 bg-white/50 hover:bg-white/80"
-            }`}
-          />
+            className="group cursor-pointer rounded-full px-1.5 py-4"
+          >
+            <span
+              className={`block h-1.5 rounded-full transition-all ${
+                i === index ? "w-5 bg-white" : "w-1.5 bg-white/50 group-hover:bg-white/80"
+              }`}
+            />
+          </button>
         ))}
       </div>
     </figure>

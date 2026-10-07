@@ -13,12 +13,24 @@
   --font-mono: var(--font-geist-mono);
   --font-quad: var(--font-quad-serif);
   --font-instrument: var(--font-instrument-serif);
+  /* Mid stop of StreamButton's gradient — the warm brown used for outlines. */
+  --color-brown-500: #6d4423;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #ffffff;
     --foreground: #ffffff;
+  }
+}
+
+/* One keyboard focus ring for every link and button. In the base layer so
+   any component with its own focus styles (the gallery tiles) overrides it
+   with utilities. The outline follows each element's border radius. */
+@layer base {
+  :where(a, button, summary, [role="button"]):focus-visible {
+    outline: 2px solid var(--color-orange-900);
+    outline-offset: 3px;
   }
 }
 

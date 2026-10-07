@@ -59,6 +59,12 @@ export default function SongCard({ song }: { song: Song }) {
   // Stop this card's audio from lingering as the bus's active element.
   useEffect(() => {
     const a = audioRef.current;
+    // The <audio> is server-rendered, so the browser can load its metadata
+    // before hydration and loadedmetadata fires with no listener attached —
+    // the card would then show 0:00 until played. Pick it up here instead.
+    if (a && a.readyState >= HTMLMediaElement.HAVE_METADATA) {
+      setDuration(a.duration);
+    }
     return () => {
       if (a) releasePlayback(a);
     };

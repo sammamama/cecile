@@ -8,6 +8,7 @@ import {
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import SmoothScroll from "./components/SmoothScroll";
+import SiteChrome from "./components/SiteChrome";
 import ArtistSchema from "./components/seo/ArtistSchema";
 import { SITE_NAME, SITE_URL } from "./lib/site";
 import { Toaster } from "sonner";
@@ -109,9 +110,13 @@ export default function RootLayout({
         <ArtistSchema />
         <SmoothScroll />
         <Toaster position="bottom-center" richColors closeButton />
-        <Navbar />
+        <SiteChrome>
+          <Navbar />
+        </SiteChrome>
         {children}
-        <Footer />
+        <SiteChrome>
+          <Footer />
+        </SiteChrome>
       </body>
     </html>
   );

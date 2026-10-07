@@ -1,36 +1,12 @@
 "use client";
 
 import Image from "next/image";
-import { motion, Variants } from "motion/react";
+import { motion } from "motion/react";
 import StreamButton from "./ui/button/StreamButton";
 import AboutButton from "./ui/button/AboutButton";
 import NextShowStrip from "./NextShowStrip";
+import { containerVariants, itemVariants } from "./motion/fadeUp";
 import type { Show } from "@/app/shows/format";
-
-const containerVariants: Variants = {
-  hidden: {},
-  visible: {
-    transition: {
-      staggerChildren: 0.05,
-    },
-  },
-};
-
-const itemVariants: Variants = {
-  hidden: {
-    opacity: 0,
-    filter: "blur(10px)",
-    y: 20,
-  },
-  visible: {
-    opacity: 1,
-    filter: "blur(0px)",
-    y: 0,
-    transition: {
-      ease: "easeInOut",
-    },
-  },
-};
 
 // Split out of page.tsx so the page itself can stay a Server Component and
 // fetch the calendar; everything animated still needs to run on the client.
